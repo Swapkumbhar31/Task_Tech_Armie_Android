@@ -11,8 +11,9 @@
         <entry key="app/src/main/res/drawable/upload_view.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/view_rounded_border.xml" value="0.2185" />
         <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.12272727272727273" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22400512695312502" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17989417989417988" />
         <entry key="app/src/main/res/layout/sorting_popup.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/task_list_adapter.xml" value="0.2691653616060087" />
       </map>
     </option>
   </component>
