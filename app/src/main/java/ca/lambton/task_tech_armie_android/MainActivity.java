@@ -21,6 +21,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
@@ -34,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
     TextView lblCurrentDate, lblTaskInfo;
 
+    List<Task> completedTasks;
+    List<Task> inCompleteTasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
 
@@ -56,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
-        taskRoomDB.taskDAO().getAllTasks();
+        completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
+        inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
 
         init();
     }

@@ -44,7 +44,6 @@ public class Task {
     private Date endDate;
 
     @ColumnInfo(defaultValue = "false")
-    @NonNull
     private boolean isCompleted;
 
     @Nullable
