@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class, Category.class}, version = 1)
 public abstract class TaskRoomDB extends RoomDatabase {
 
     public static final String DATABASE_NAME = "tasks";
@@ -24,4 +24,5 @@ public abstract class TaskRoomDB extends RoomDatabase {
     }
 
     public abstract TaskDAO taskDAO();
+    public abstract CategoryDAO categoryDAO();
 }
