@@ -3,6 +3,7 @@ package ca.lambton.task_tech_armie_android;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -14,26 +15,36 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.Helper.DateConverter;
 import ca.lambton.task_tech_armie_android.SharedPreferences.UserSettings;
 
 public class MainActivity extends AppCompatActivity {
 
     private TaskRoomDB taskRoomDB;
 
+    TextView lblCurrentDate, lblTaskInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
         taskRoomDB = TaskRoomDB.getInstance(this);
+
+        // UIObject initialization
+        lblCurrentDate = findViewById(R.id.lblCurrentDate);
+        lblTaskInfo = findViewById(R.id.lblTaskCompletionInfo);
 
         // Insert Dummy data
 
@@ -47,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
         }
         taskRoomDB.taskDAO().getAllTasks(true);
         taskRoomDB.taskDAO().getAllTasks(false);
+
+        init();
+    }
+
+    private void init(){
+        lblCurrentDate.setText(DateConverter.getFullDate(new Date()));
     }
 
     private void insertCategories() {
@@ -169,5 +186,9 @@ public class MainActivity extends AppCompatActivity {
         btnDateSort.setOnClickListener(v -> {
 
         });
+    }
+
+    public void addNewTask(View view) {
+        startActivity(new Intent(this, AddNewTask.class));
     }
 }

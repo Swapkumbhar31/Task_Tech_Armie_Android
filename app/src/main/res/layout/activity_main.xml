@@ -30,7 +30,7 @@
 
 
             <TextView
-                android:id="@+id/txtTaskCompletionInfo"
+                android:id="@+id/lblTaskCompletionInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -121,6 +121,7 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="48dp"
             android:contentDescription="Add New Task"
+            android:onClick="addNewTask"
             android:src="@drawable/add"
             app:elevation="10dp"
             app:fabSize="normal"
