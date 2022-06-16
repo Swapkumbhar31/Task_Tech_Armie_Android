@@ -3,6 +3,7 @@ package ca.lambton.task_tech_armie_android;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
         taskRoomDB = TaskRoomDB.getInstance(this);
         taskRoomDB.taskDAO().getAllTasks();
     }
@@ -61,5 +63,9 @@ public class MainActivity extends AppCompatActivity {
         btnDateSort.setOnClickListener(v -> {
 
         });
+    }
+
+    public void addNewTask(View view) {
+        startActivity(new Intent(this, AddNewTask.class));
     }
 }
