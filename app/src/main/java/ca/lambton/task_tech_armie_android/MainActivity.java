@@ -17,7 +17,13 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Date;
+
+import ca.lambton.task_tech_armie_android.Database.Category;
+import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.SharedPreferences.UserSettings;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +36,108 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
+
+        // Insert Dummy data
+
+        UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
+        boolean firstTimeOpen = new UserSettings().getInstance(getApplicationContext()).isFirstTimeOpen();
+
+        if (firstTimeOpen) {
+            insertCategories();
+            insertTasks();
+            userSettings.setIsFirstTimeOpen(false);
+        }
         taskRoomDB.taskDAO().getAllTasks();
+    }
+
+    private void insertCategories() {
+        taskRoomDB.categoryDAO().addCategory(new Category("Finance"));
+        taskRoomDB.categoryDAO().addCategory(new Category("Shopping"));
+        taskRoomDB.categoryDAO().addCategory(new Category("Freelance"));
+        taskRoomDB.categoryDAO().addCategory(new Category("Personal"));
+    }
+
+    private void insertTasks() {
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Visit Montreal",
+                new Date(),
+                new Date(),
+                false,
+                new ArrayList<>(),
+                null,
+                null,
+                1L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Invest Today",
+                new Date(),
+                new Date(),
+                false,
+                new ArrayList<>(),
+                null,
+                null,
+                1L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Book a room",
+                new Date(),
+                new Date(),
+                false,
+                new ArrayList<>(),
+                null,
+                1L,
+                1L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Say hello to new friend",
+                new Date(),
+                new Date(),
+                false,
+                new ArrayList<>(),
+                null,
+                null,
+                3L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Soaps",
+                new Date(),
+                new Date(),
+                false,
+                new ArrayList<>(),
+                null,
+                null,
+                2L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Hello World Program",
+                new Date(),
+                new Date(),
+                true,
+                new ArrayList<>(),
+                null,
+                null,
+                3L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Attend Class",
+                new Date(),
+                new Date(),
+                true,
+                new ArrayList<>(),
+                null,
+                null,
+                4L
+        ));
+        taskRoomDB.taskDAO().addTask(new Task(
+                "Laundry",
+                new Date(),
+                new Date(),
+                true,
+                new ArrayList<>(),
+                null,
+                null,
+                4L
+        ));
     }
 
     public void openSortPopupView(View view){
