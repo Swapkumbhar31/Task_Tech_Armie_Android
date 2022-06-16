@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/edittext_rounded_border.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/plain_button.xml" value="0.2185" />
+        <entry key="app/src/main/res/drawable/view_rounded_border.xml" value="0.2185" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22400512695312502" />
+        <entry key="app/src/main/res/layout/sorting_popup.xml" value="0.1" />
       </map>
     </option>
   </component>
