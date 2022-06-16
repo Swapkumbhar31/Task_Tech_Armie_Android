@@ -10,4 +10,6 @@
     <color name="primary">#FF6560</color>
     <color name="secondary">#F0F0F0</color>
     <color name="text_color">#575767</color>
+    <color name="border_color">#bebebe</color>
+    <color name="success">#e9ffdb</color>
 </resources>
