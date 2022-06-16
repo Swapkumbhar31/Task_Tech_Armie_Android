@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
-        taskRoomDB.taskDAO().getAllTasks();
+        taskRoomDB.taskDAO().getAllTasks(true);
+        taskRoomDB.taskDAO().getAllTasks(false);
     }
 
     private void insertCategories() {
