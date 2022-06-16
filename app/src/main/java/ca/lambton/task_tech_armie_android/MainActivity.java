@@ -81,83 +81,91 @@ public class MainActivity extends AppCompatActivity {
     private void insertTasks() {
         taskRoomDB.taskDAO().addTask(new Task(
                 "Visit Montreal",
-                new Date(),
-                new Date(),
+                new Date(1655413575),
+                new Date(1655499975),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Invest Today",
-                new Date(),
-                new Date(),
+                new Date(1655413575),
+                new Date(1655420775),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Book a room",
-                new Date(),
-                new Date(),
+                new Date(1655424375),
+                new Date(1655510355),
                 false,
                 new ArrayList<>(),
                 null,
                 1L,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Say hello to new friend",
-                new Date(),
-                new Date(),
+                new Date(1655683200),
+                new Date(1655769600),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                3L
+                3L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Soaps",
-                new Date(),
-                new Date(),
+                new Date(1655856000),
+                new Date(1656028800),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                2L
+                2L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Hello World Program",
-                new Date(),
-                new Date(),
+                new Date(1655029800),
+                new Date(1655202600),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                3L
+                3L,
+                new Date(1655116200)
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Attend Class",
-                new Date(),
-                new Date(),
+                new Date(1655238600),
+                new Date(1655245800),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                4L
+                4L,
+                new Date(1655238600)
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Laundry",
-                new Date(),
-                new Date(),
+                new Date(1655220600),
+                new Date(1655227800),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                4L
+                4L,
+                new Date(1655220600)
         ));
     }
 
