@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Task Manager</string>
+    <string-array name="categories">
+        <item>Games</item>
+        <item>Education</item>
+        <item>Travelling</item>
+    </string-array>
 </resources>
