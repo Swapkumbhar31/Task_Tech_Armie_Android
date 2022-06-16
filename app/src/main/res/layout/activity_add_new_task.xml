@@ -162,7 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:backgroundTint="@color/primary"
-        android:fontFamily="@font/lato"
+        android:fontFamily="@font/lato_bold"
         android:padding="15dp"
         android:text="Add Task"
         android:textAllCaps="false"
