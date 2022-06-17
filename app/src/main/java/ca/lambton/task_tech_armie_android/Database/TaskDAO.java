@@ -31,4 +31,9 @@ public interface TaskDAO {
     @Query("select * from tasks where id = :id")
     Task getTaskById(long id);
 
+    @Query("select * from tasks where name like '%' || :name || '%' and parentTaskId is null and isCompleted = :isCompleted order by completedAt, endDate desc")
+    List<Task> searchTaskByName(String name, boolean isCompleted);
+
+    @Query("select * from tasks where parentTaskId = :parentTaskId and isCompleted = :isCompleted order by completedAt, endDate desc")
+    List<Task> getSubtasks(long parentTaskId, boolean isCompleted);
 }
