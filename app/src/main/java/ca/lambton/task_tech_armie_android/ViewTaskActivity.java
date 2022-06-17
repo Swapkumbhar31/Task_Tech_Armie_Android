@@ -2,12 +2,14 @@ package ca.lambton.task_tech_armie_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,7 +36,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     Button delete_task ;
     Button go_back ;
     MediaPlayer mediaPlayer;
-    LinearLayout audio_layout ;
+    LinearLayout audio_layout ,images_layout ;
+
     ListView lvCompleted, lvIncomplete;
     private TaskRoomDB taskRoomDB;
     List<Task> completedTasks;
@@ -55,6 +58,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         go_back = findViewById(R.id.bt_go_back);
         mediaPlayer = MediaPlayer.create(this, R.raw.song);
         audio_layout = findViewById(R.id.audio_ll);
+        images_layout = findViewById(R.id.images_layout);
         mediaPlayer.setVolume(5f,5f);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
@@ -63,7 +67,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
-        task = taskRoomDB.taskDAO().getTaskById(1L);
+        task = taskRoomDB.taskDAO().getTaskById(2L);
 
         if (task != null) {
             if (task.getAudioPath() == null) {
@@ -74,9 +78,36 @@ public class ViewTaskActivity extends AppCompatActivity {
             due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
 
             loadAllTasks();
+            System.out.println("out" + task.getPhotos().size());
+            if (task.getPhotos() == null)
+            {
+                images_layout.setVisibility(View.GONE);
+            }
+            else if (task.getPhotos().size() == 0)
+            {
+                images_layout.setVisibility(View.GONE);
+                System.out.println("empty");
+            }
+
         }
 
 
+
+        delete_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                taskRoomDB.taskDAO().delete(task);
+                finish();
+
+            }
+        });
+
+        go_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         audio_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
