@@ -11,6 +11,9 @@ public class ListConvertor {
 
     @TypeConverter
     public static List<String> stringList(String paths) {
+        if (paths.length() < 4) {
+            return new ArrayList<>();
+        }
         String[] strings = paths.split(",");
         List<String> obj = new ArrayList<>();
         Collections.addAll(obj, strings);

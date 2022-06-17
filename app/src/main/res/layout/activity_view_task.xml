@@ -105,16 +105,18 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="2dp"
-                android:background="@color/border_color"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/images_layout"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="2dp"
+                    android:background="@color/border_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,6 +130,7 @@
 
 
                 <HorizontalScrollView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
@@ -214,16 +217,21 @@
                     android:textStyle="normal"
 
                     />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                       android:layout_weight="1"
+                       />
 
                     <ImageButton
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
                         android:id="@+id/btn_play_pause_mp3"
                         android:background="@null"
                         android:src="@drawable/play"
                         android:scaleType="fitXY"
+                        android:layout_marginHorizontal="30dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="240dp"
                         />
 
                 </LinearLayout>
