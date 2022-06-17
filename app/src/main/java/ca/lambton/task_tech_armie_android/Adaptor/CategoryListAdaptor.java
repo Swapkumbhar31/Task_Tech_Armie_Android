@@ -72,16 +72,6 @@ public class CategoryListAdaptor extends BaseAdapter {
                     categories = new ArrayList<>();
                     notifyDataSetChanged();
                     loadCategories();
-                    CategoryModel categoryModel = categories.get(i);
-                    if (categoryModel.getTaskCount() > 0) {
-                        holder.btnDelete.setVisibility(View.GONE);
-                        holder.taskCountView.setText(categoryModel.getTaskCount() + "");
-                        holder.taskCountView.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.btnDelete.setVisibility(View.VISIBLE);
-                        holder.taskCountView.setVisibility(View.GONE);
-                    }
-
                 }
             });
 
