@@ -37,14 +37,23 @@ public class Task {
 
     @NonNull
     @TypeConverters(DateConverter.class)
-    private Date startDate;
-
-    @NonNull
-    @TypeConverters(DateConverter.class)
     private Date endDate;
 
+
+    @Nullable
+    @TypeConverters(DateConverter.class)
+    private Date completedAt;
+
+    @Nullable
+    public Date getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(@Nullable Date completedAt) {
+        this.completedAt = completedAt;
+    }
+
     @ColumnInfo(defaultValue = "false")
-    @NonNull
     private boolean isCompleted;
 
     @Nullable
@@ -84,15 +93,6 @@ public class Task {
 
     public void setName(@NonNull String name) {
         this.name = name;
-    }
-
-    @NonNull
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(@NonNull Date startDate) {
-        this.startDate = startDate;
     }
 
     @NonNull
@@ -139,14 +139,15 @@ public class Task {
         this.parentTaskId = parentTaskId;
     }
 
-    public Task(@NonNull String name, @NonNull Date startDate, @NonNull Date endDate, boolean isCompleted, @Nullable List<String> photos, @Nullable String audioPath, @Nullable Long parentTaskId, @NonNull Long categoryID) {
+    public Task(@NonNull String name, @NonNull Date endDate, boolean isCompleted, @Nullable List<String> photos, @Nullable String audioPath, @Nullable Long parentTaskId, @NonNull Long categoryID, @Nullable
+                Date completedAt) {
         this.name = name;
-        this.startDate = startDate;
         this.endDate = endDate;
         this.isCompleted = isCompleted;
         this.photos = photos;
         this.audioPath = audioPath;
         this.parentTaskId = parentTaskId;
         this.categoryID = categoryID;
+        this.completedAt = completedAt;
     }
 }
