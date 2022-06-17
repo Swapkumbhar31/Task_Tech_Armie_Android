@@ -60,6 +60,7 @@ import ca.lambton.task_tech_armie_android.Adaptor.TaskListAdaptor;
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.Helper.ImageHelper;
 
 
 public class AddNewTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -67,7 +68,7 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     ImageButton btnRecorder, btnRecordingPlay;
     Boolean recorder;
     Boolean playRecording;
-    TextView txtDueDate;
+    TextView txtDueDate, txtBtnManageCategories;
     Calendar dueDate = Calendar.getInstance();
     Spinner categoriesSpinner;
     private TaskRoomDB taskRoomDB;
@@ -131,9 +132,37 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         btnRecordingPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48_disabled);
 
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName +=  (new Date()) + "/.3gp";
+        mFileName += ImageHelper.generateUniqueFileName();
 
         init();
+
+        txtBtnManageCategories=findViewById(R.id.txtBtnAddNewCategory);
+        txtBtnManageCategories.setOnClickListener(v -> {
+            startActivity(new Intent(this, AddNewCategory.class));
+        });
+
+        submitBtn.setOnClickListener(view -> {
+
+            String taskName = txtNewTask.getText().toString().trim();
+            if(taskName.isEmpty()){
+                txtNewTask.setError("Task can't be empty");
+                txtNewTask.requestFocus();
+                return;
+            }
+            taskRoomDB.taskDAO().addTask(
+                    new Task(
+                            taskName,
+                            dueDate.getTime(),
+                            false,
+                            imageList,
+                            (!btnRecordingPlay.isEnabled()) ? null : mFileName,
+                            parentTaskId > 0L ? parentTaskId : null,
+                            1L,
+                            null
+                    )
+            );
+            finish();
+        });
 
     }
 
@@ -144,21 +173,6 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     private void init() {
         recorder = false;
         playRecording = false;
-        submitBtn.setOnClickListener(view -> {
-            taskRoomDB.taskDAO().addTask(
-                    new Task(
-                            txtNewTask.getText().toString(),
-                            dueDate.getTime(),
-                            false,
-                            imageList,
-                            null,
-                            parentTaskId > 0L ? parentTaskId : null,
-                            1L,
-                            null
-                            )
-            );
-            finish();
-        });
     }
 
     public void goToBack(View view) {

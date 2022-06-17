@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class ImageHelper {
 
@@ -63,5 +64,15 @@ public class ImageHelper {
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//Store the compressed data in ByteArrayInputStream
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//Generate image from ByteArrayInputStream data
         return bitmap;
+    }
+
+    public static String generateUniqueFileName() {
+        String filename = "";
+        long millis = System.currentTimeMillis();
+        String datetime = new Date().toGMTString();
+        datetime = datetime.replace(" ", "");
+        datetime = datetime.replace(":", "");
+        filename = "/"+datetime + millis + ".3gp";
+        return filename;
     }
 }
