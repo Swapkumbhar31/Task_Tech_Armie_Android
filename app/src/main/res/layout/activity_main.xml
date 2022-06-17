@@ -19,9 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_black"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:paddingTop="20dp"
-            android:text="March 9, 2020"
             android:textColor="@color/primary"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -98,7 +97,11 @@
                 android:id="@+id/listviewIncomplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="15dp"
+                android:focusable="true"
+                android:clickable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,12 +121,18 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listviewIncomplete" />
+
             <ListView
                 android:id="@+id/listviewCompleted"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="2dp"
+                android:clickable="true"
+                android:scrollingCache="false"
+                android:smoothScrollbar="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -131,18 +140,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
         </LinearLayout>
     </ScrollView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:contentDescription="Add New Task"
         android:onClick="addNewTask"
         android:src="@drawable/add"
         app:elevation="10dp"
         app:fabSize="normal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
         app:maxImageSize="30dp" />
 </RelativeLayout >

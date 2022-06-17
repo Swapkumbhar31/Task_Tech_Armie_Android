@@ -11,9 +11,16 @@ public class ListConvertor {
 
     @TypeConverter
     public static List<String> stringList(String paths) {
+        if (paths.length() < 4) {
+            return new ArrayList<>();
+        }
         String[] strings = paths.split(",");
         List<String> obj = new ArrayList<>();
-        Collections.addAll(obj, strings);
+        for (String s: strings) {
+            if (s.length() >0) {
+                obj.add(s);
+            }
+        }
         return obj;
     }
 
@@ -21,7 +28,9 @@ public class ListConvertor {
     public static String string(List<String> paths) {
         StringBuilder obj = new StringBuilder();
         for (String s:paths) {
-            obj.append(",").append(s);
+            if (s.length() > 0) {
+                obj.append(",").append(s);
+            }
         }
         return obj.toString();
     }
