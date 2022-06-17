@@ -33,6 +33,7 @@ import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
 import ca.lambton.task_tech_armie_android.Helper.DateConverter;
+import ca.lambton.task_tech_armie_android.Helper.ListViewSize;
 import ca.lambton.task_tech_armie_android.SharedPreferences.UserSettings;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
         lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        ListViewSize.getListViewSize(lvIncomplete);
+        ListViewSize.getListViewSize(lvCompleted);
     }
 
     private void init(){
