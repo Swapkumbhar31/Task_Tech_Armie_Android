@@ -42,7 +42,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     private TaskRoomDB taskRoomDB;
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
-    TextView categories;
+    TextView categories , name;
     Category category;
     //Boolean isPlaying  = false ;
     Task task;
@@ -59,6 +59,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.song);
         audio_layout = findViewById(R.id.audio_ll);
         images_layout = findViewById(R.id.images_layout);
+        name = findViewById(R.id.tv_name);
         mediaPlayer.setVolume(5f,5f);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
@@ -69,6 +70,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         taskRoomDB = TaskRoomDB.getInstance(this);
         task = taskRoomDB.taskDAO().getTaskById(2L);
 
+
+
         if (task != null) {
             if (task.getAudioPath() == null) {
                 audio_layout.setVisibility(View.GONE);
@@ -76,7 +79,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 audio_layout.setVisibility(View.GONE);
             }
             due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
-
+            name.setText(task.getName());
             loadAllTasks();
             System.out.println("out" + task.getPhotos().size());
             if (task.getPhotos() == null)
