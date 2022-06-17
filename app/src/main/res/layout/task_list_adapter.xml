@@ -10,30 +10,34 @@
         android:layout_weight="1"
         android:layout_height="40dp"
         android:layout_margin="10dp" />
+
     <LinearLayout
+        android:id="@+id/llParentTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="10dp"
         android:layout_weight="5"
-        android:layout_marginTop="10dp">
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/lblTaskTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
-            android:text="Visit Montreal"
             android:padding="3dp"
+            android:text="Visit Montreal"
             android:textColor="@color/text_color"
             android:textSize="18dp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/lblTaskCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Finance"
-            android:padding="3dp"
             android:layout_marginBottom="3dp"
+            android:fontFamily="@font/lato"
+            android:padding="3dp"
+            android:text="Finance"
             android:textColor="@color/text_color"
             android:textSize="16dp" />
     </LinearLayout>
