@@ -102,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+        setTaskInfo();
+    }
+
+    private void setTaskInfo(){
+        String info = inCompleteTasks.size() + " incomplete, "  + completedTasks.size() + " completed";
+        lblTaskInfo.setText(info);
     }
 
     public void loadAllTasks(){
