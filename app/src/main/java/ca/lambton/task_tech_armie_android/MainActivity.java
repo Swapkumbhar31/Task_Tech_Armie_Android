@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadAllTasks(){
+    public void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
