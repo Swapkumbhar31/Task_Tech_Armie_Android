@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNewTask"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".AddNewTask">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,155 +16,159 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="15dp">
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="75dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="10dp"
-        android:background="@null"
-        android:onClick="goToBack"
-        android:scaleType="fitCenter"
-        android:src="@drawable/back" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_black"
-        android:paddingTop="15dp"
-        android:text="Add a new task"
-        android:textColor="@color/primary"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:fontFamily="@font/lato"
-        android:text="Click 'Add Task' to save"
-        android:textColor="@color/text_color"
-        android:textSize="14sp" />
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="75dp"
+                android:layout_height="34dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:onClick="goToBack"
+                android:scaleType="fitCenter"
+                android:src="@drawable/back" />
 
-    <EditText
-        android:id="@+id/txtNewTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edittext_rounded_border"
-        android:fontFamily="@font/lato"
-        android:textColor="@color/text_color"
-        android:hint="New Task"
-        android:padding="15dp"
-        android:textSize="16sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_black"
+                android:paddingTop="15dp"
+                android:text="Add a new task"
+                android:textColor="@color/primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/txtDueDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edittext_rounded_border"
-        android:fontFamily="@font/lato"
-        android:textColor="@color/text_color"
-        android:hint="Due date (MM/dd/YYYY)"
-        android:padding="15dp"
-        android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:paddingTop="12dp"
+                android:text="Click 'Add Task' to save"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/lato"
-        android:text="Select category"
-        android:textColor="@color/text_color"
-        android:textSize="16sp" />
-    <Spinner
-        android:id="@+id/spCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edittext_rounded_border"
-        android:entries="@array/categories"
-        android:fontFamily="@font/lato"
-        android:padding="15dp"
-        android:textColor="@color/text_color"
-        android:spinnerMode="dialog"
-        android:textSize="16sp" />
+            <EditText
+                android:id="@+id/txtNewTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rounded_border"
+                android:fontFamily="@font/lato"
+                android:hint="New Task"
+                android:padding="15dp"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/upload_view"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txtDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rounded_border"
+                android:fontFamily="@font/lato"
+                android:clickable="true"
+                android:padding="15dp"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                android:focusable="true" />
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/upload" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/lato"
+                android:paddingTop="15dp"
+                android:text="Select category"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lvImagePreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/spCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_border"
+                android:entries="@array/categories"
+                android:fontFamily="@font/lato"
+                android:padding="15dp"
+                android:spinnerMode="dialog"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/upload_view"
+                android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/btnRecorder"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_rounded_border"
-            android:onClick="recorderClicked"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/recorder"
-            android:textAlignment="center" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/upload" />
 
-        <ImageButton
-            android:id="@+id/btnPlayRecording"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_rounded_border"
-            android:onClick="playRecordingPlayed"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/play"
-            android:textAlignment="center" />
-    </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lvImagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btnMarkAsCompleted"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@drawable/edittext_rounded_border"
-        android:onClick="goToBack"
-        android:scaleType="fitCenter"
-        android:src="@drawable/mark_as_completed"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/primary"
-        android:fontFamily="@font/lato_bold"
-        android:padding="15dp"
-        android:text="Add Task"
-        android:textAllCaps="false"
-        android:textSize="18dp" />
+                <ImageButton
+                    android:id="@+id/btnRecorder"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edittext_rounded_border"
+                    android:onClick="recorderClicked"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/recorder"
+                    android:textAlignment="center" />
+
+                <ImageButton
+                    android:id="@+id/btnPlayRecording"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edittext_rounded_border"
+                    android:onClick="playRecordingPlayed"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/play"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnMarkAsCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rounded_border"
+                android:onClick="goToBack"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/mark_as_completed"
+                android:textAlignment="center" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/primary"
+                android:fontFamily="@font/lato_bold"
+                android:padding="15dp"
+                android:text="Add Task"
+                android:textAllCaps="false"
+                android:textSize="18dp" />
 
         </LinearLayout>
     </ScrollView>

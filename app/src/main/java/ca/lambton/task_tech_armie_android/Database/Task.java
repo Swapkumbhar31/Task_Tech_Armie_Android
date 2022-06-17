@@ -37,10 +37,6 @@ public class Task {
 
     @NonNull
     @TypeConverters(DateConverter.class)
-    private Date startDate;
-
-    @NonNull
-    @TypeConverters(DateConverter.class)
     private Date endDate;
 
 
@@ -100,15 +96,6 @@ public class Task {
     }
 
     @NonNull
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(@NonNull Date startDate) {
-        this.startDate = startDate;
-    }
-
-    @NonNull
     public Date getEndDate() {
         return endDate;
     }
@@ -152,10 +139,9 @@ public class Task {
         this.parentTaskId = parentTaskId;
     }
 
-    public Task(@NonNull String name, @NonNull Date startDate, @NonNull Date endDate, boolean isCompleted, @Nullable List<String> photos, @Nullable String audioPath, @Nullable Long parentTaskId, @NonNull Long categoryID, @Nullable
+    public Task(@NonNull String name, @NonNull Date endDate, boolean isCompleted, @Nullable List<String> photos, @Nullable String audioPath, @Nullable Long parentTaskId, @NonNull Long categoryID, @Nullable
                 Date completedAt) {
         this.name = name;
-        this.startDate = startDate;
         this.endDate = endDate;
         this.isCompleted = isCompleted;
         this.photos = photos;
