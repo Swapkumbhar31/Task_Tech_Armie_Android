@@ -84,26 +84,31 @@
                 android:textColor="@color/text_color"
                 android:textSize="16sp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/upload_view"
-                android:orientation="horizontal">
+                android:background="@drawable/upload_view">
 
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@null"
+                    android:id="@+id/btnUpload"
                     android:onClick="uploadImageClicked"
                     android:scaleType="fitCenter"
                     android:src="@drawable/upload" />
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/lvImagePreview"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_below="@id/btnUpload"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
