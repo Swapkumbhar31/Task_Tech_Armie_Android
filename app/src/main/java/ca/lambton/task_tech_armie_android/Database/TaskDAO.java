@@ -22,7 +22,7 @@ public interface TaskDAO {
     @Delete
     void delete(Task task);
 
-    @Query("select * from tasks where parentTaskId is null and isCompleted = :isCompleted order by name desc")
+    @Query("select * from tasks where parentTaskId is null and isCompleted = :isCompleted order by name asc")
     List<Task> getAllTasksSortByTitle(boolean isCompleted);
 
     @Query("select * from tasks where parentTaskId is null and isCompleted = :isCompleted order by endDate desc")

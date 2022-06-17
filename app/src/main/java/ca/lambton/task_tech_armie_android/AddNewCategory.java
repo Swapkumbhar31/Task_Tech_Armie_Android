@@ -1,7 +1,9 @@
 package ca.lambton.task_tech_armie_android;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ListView;
@@ -16,6 +18,7 @@ import android.widget.Button;
         import ca.lambton.task_tech_armie_android.Database.Category;
         import ca.lambton.task_tech_armie_android.Database.Task;
         import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.Model.CategoryModel;
 
 
 public class AddNewCategory extends AppCompatActivity {
@@ -25,7 +28,7 @@ public class AddNewCategory extends AppCompatActivity {
     ListView categoryListView;
     EditText txtNewCategory;
     Button addCategoryBtn;
-    List<Category> listOfItems;
+    List<CategoryModel> listOfItems;
     CategoryListAdaptor adaptor;
 
     @Override
@@ -65,9 +68,10 @@ public class AddNewCategory extends AppCompatActivity {
 
     private void loadCategories(){
         listOfItems = new ArrayList<>();
-        List<Category> listOfItems = new ArrayList<>();
-        for (Category category: taskRoomDB.categoryDAO().getAllCategories()) {
-            listOfItems.add(category);
+        List<CategoryModel> listOfItems = new ArrayList<>();
+        Cursor cursor = taskRoomDB.categoryDAO().getCategoriesWithTaskCount();
+        while (cursor.moveToNext()) {
+            listOfItems.add(new CategoryModel(cursor.getString(1), cursor.getLong(0), cursor.getInt(11)));
         }
         this.listOfItems = listOfItems;
 
@@ -78,8 +82,8 @@ public class AddNewCategory extends AppCompatActivity {
         categoryListView.setAdapter(adaptor);
     }
 
-//    public void goBack(View view) {
-//        this.finish();
-//    }
+    public void goBack(View view) {
+        this.finish();
+    }
 
 }
