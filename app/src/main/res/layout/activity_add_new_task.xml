@@ -32,19 +32,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_black"
                 android:paddingTop="15dp"
-                android:text="Add a new task"
+                android:text="@string/add_a_new_task"
                 android:textColor="@color/primary"
                 android:textSize="28sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato"
-                android:paddingTop="12dp"
-                android:text="Click 'Add Task' to save"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/txtNewTask"
@@ -53,7 +44,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edittext_rounded_border"
                 android:fontFamily="@font/lato"
-                android:hint="New Task"
+                android:hint="@string/new_task"
                 android:padding="15dp"
                 android:textColor="@color/text_color"
                 android:textSize="16sp" />
@@ -146,28 +137,29 @@
                     android:textAlignment="center" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btnMarkAsCompleted"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_rounded_border"
-                android:onClick="goToBack"
-                android:padding="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/mark_as_completed"
-                android:textAlignment="center" />
+<!--            <ImageButton-->
+<!--                android:id="@+id/btnMarkAsCompleted"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="55dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:background="@drawable/edittext_rounded_border"-->
+<!--                android:onClick="goToBack"-->
+<!--                android:padding="10dp"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/mark_as_completed"-->
+<!--                android:textAlignment="center" />-->
 
             <Button
+                android:id="@+id/submitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/primary"
                 android:fontFamily="@font/lato_bold"
                 android:padding="15dp"
-                android:text="Add Task"
+                android:text="@string/add_task"
                 android:textAllCaps="false"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>

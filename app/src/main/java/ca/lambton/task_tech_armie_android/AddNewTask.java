@@ -8,7 +8,9 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import ca.lambton.task_tech_armie_android.Database.Category;
+import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
 
 
@@ -36,6 +39,8 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     Calendar dueDate = Calendar.getInstance();
     Spinner categoriesSpinner;
     private TaskRoomDB taskRoomDB;
+    EditText txtNewTask;
+    Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         btnRecordingPlay = findViewById(R.id.btnPlayRecording);
         txtDueDate = findViewById(R.id.txtDueDate);
         categoriesSpinner = findViewById(R.id.categories);
+        submitBtn = findViewById(R.id.submitBtn);
+        txtNewTask = findViewById(R.id.txtNewTask);
         txtDueDate.setText(DateFormat.format("yyyy-MM-dd hh:mm a", dueDate));
         List<String> listOfItems = new ArrayList<>();
         for (Category category: taskRoomDB.categoryDAO().getAllCategories()) {
@@ -70,11 +77,27 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         btnRecordingPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48_disabled);
 
         init();
+
     }
 
     private void init() {
         recorder = false;
         playRecording = false;
+        submitBtn.setOnClickListener(view -> {
+            taskRoomDB.taskDAO().addTask(
+                    new Task(
+                            txtNewTask.getText().toString(),
+                            dueDate.getTime(),
+                            false,
+                            new ArrayList<>(),
+                            null,
+                            null,
+                            1L,
+                            null
+                            )
+            );
+            finish();
+        });
     }
 
     public void goToBack(View view) {

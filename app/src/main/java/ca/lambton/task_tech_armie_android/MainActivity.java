@@ -1,8 +1,11 @@
 package ca.lambton.task_tech_armie_android;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
+    ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +71,21 @@ public class MainActivity extends AppCompatActivity {
         }
         init();
 
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
-
+        this.launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                    }
+                    loadAllTasks();
+                });
     }
 
     private void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
     }
 
     private void init(){
@@ -205,6 +216,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewTask(View view) {
-        startActivity(new Intent(this, AddNewTask.class));
+        launcher.launch(new Intent(this, AddNewTask.class));
     }
 }
