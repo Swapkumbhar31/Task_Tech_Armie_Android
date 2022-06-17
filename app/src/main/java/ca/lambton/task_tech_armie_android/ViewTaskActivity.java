@@ -45,7 +45,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     TextView categories, name;
     Category category;
     Task task;
-    RelativeLayout no_task_incompleted , no_task_completed ;
+    RelativeLayout no_task_incompleted , no_task_completed , no_photos;
     ImageView ivChecked;
     private TaskRoomDB taskRoomDB;
     RecyclerView lvImageView;
@@ -73,6 +73,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         lvImageView.setLayoutManager(layoutManager);
         no_task_incompleted = findViewById(R.id.no_task_incompleted);
         no_task_completed = findViewById(R.id.no_task_completed);
+        no_photos = findViewById(R.id.no_photos);
 
         lvImageView.setVisibility(View.GONE);
 
@@ -90,12 +91,14 @@ public class ViewTaskActivity extends AppCompatActivity {
             due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
             name.setText(task.getName());
             if (task.getPhotos() == null) {
-                images_layout.setVisibility(View.GONE);
+                images_layout.setVisibility(View.VISIBLE);
+                no_photos.setVisibility(View.VISIBLE);
             } else if (task.getPhotos().size() == 0) {
-                images_layout.setVisibility(View.GONE);
+                images_layout.setVisibility(View.VISIBLE);
+                no_photos.setVisibility(View.VISIBLE);
             } else {
                 lvImageView.setVisibility(View.VISIBLE);
-                System.out.println(task.getPhotos());
+                no_photos.setVisibility(View.GONE);
                 lvImageView.setAdapter(new ImageListAdapter(this, task.getPhotos()));
             }
         }
@@ -172,6 +175,7 @@ public class ViewTaskActivity extends AppCompatActivity {
          else {
              no_task_incompleted.setVisibility(View.GONE);
          }
+
     }
 
 
