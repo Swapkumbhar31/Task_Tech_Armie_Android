@@ -95,10 +95,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@null"
+                    android:onClick="uploadImageClicked"
                     android:scaleType="fitCenter"
                     android:src="@drawable/upload" />
 
-                <androidx.recyclerview.widget.RecyclerView
+                <ListView
                     android:id="@+id/lvImagePreview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
