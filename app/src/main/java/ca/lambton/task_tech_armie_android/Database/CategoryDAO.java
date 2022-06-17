@@ -22,4 +22,7 @@ public interface CategoryDAO {
 
     @Update
     void update(Category category);
+
+    @Query("select * from categories where id = :id")
+    Category getCategoryByID(long id);
 }
