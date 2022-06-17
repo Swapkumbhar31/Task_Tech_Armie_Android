@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView lblCurrentDate, lblTaskInfo;
     ListView lvCompleted, lvIncomplete;
+    EditText txtSearch;
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         lblTaskInfo = findViewById(R.id.lblTaskCompletionInfo);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
+        txtSearch = findViewById(R.id.txtSearch);
 
         // Insert Dummy data
         UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
@@ -80,6 +84,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                     loadAllTasks();
                 });
+
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                completedTasks = taskRoomDB.taskDAO().searchTaskByName(s.toString(), true);
+                inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(s.toString(), false);
+                lvIncomplete.setAdapter(new TaskListAdaptor(getApplicationContext(), inCompleteTasks));
+                lvCompleted.setAdapter(new TaskListAdaptor(getApplicationContext(), completedTasks));
+                ListViewSize.getListViewSize(lvIncomplete);
+                ListViewSize.getListViewSize(lvCompleted);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void loadAllTasks(){
