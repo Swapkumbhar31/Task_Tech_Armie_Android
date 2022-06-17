@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class TaskListAdaptor extends BaseAdapter {
             holder.lblTaskTitle=view.findViewById(R.id.lblTaskTitle);
             holder.lblTaskCategory=view.findViewById(R.id.lblTaskCategory);
             holder.btnCheck=view.findViewById(R.id.btnCheck);
+            holder.btnRemoveTask=view.findViewById(R.id.btnDeleteTask);
             view.setTag(holder);
         }
         else {
@@ -78,19 +80,23 @@ public class TaskListAdaptor extends BaseAdapter {
             holder.btnCheck.setChecked(false);
         }
 
-        holder.btnCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(tasks.get(i).isCompleted()){
-                    tasks.get(i).setCompleted(false);
-                }else{
-                    tasks.get(i).setCompleted(true);
-                }
-                taskRoomDB.taskDAO().update(tasks.get(i));
-                Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                context.startActivity(intent);
+        holder.btnCheck.setOnClickListener(v -> {
+            if(tasks.get(i).isCompleted()){
+                tasks.get(i).setCompleted(false);
+            }else{
+                tasks.get(i).setCompleted(true);
             }
+            taskRoomDB.taskDAO().update(tasks.get(i));
+            Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            context.startActivity(intent);
+        });
+
+        holder.btnRemoveTask.setOnClickListener(v -> {
+            taskRoomDB.taskDAO().delete(tasks.get(i));
+            Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            context.startActivity(intent);
         });
 
         return view;
@@ -99,5 +105,6 @@ public class TaskListAdaptor extends BaseAdapter {
     static class ViewHolder{
         private TextView lblTaskTitle, lblTaskCategory;
         private CheckBox btnCheck;
+        private ImageButton btnRemoveTask;
     }
 }
