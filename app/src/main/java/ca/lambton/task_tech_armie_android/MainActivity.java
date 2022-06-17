@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import ca.lambton.task_tech_armie_android.Adaptor.TaskListAdaptor;
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskRoomDB taskRoomDB;
 
     TextView lblCurrentDate, lblTaskInfo;
+    ListView lvCompleted, lvIncomplete;
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         // UIObject initialization
         lblCurrentDate = findViewById(R.id.lblCurrentDate);
         lblTaskInfo = findViewById(R.id.lblTaskCompletionInfo);
+        lvCompleted = findViewById(R.id.listviewCompleted);
+        lvIncomplete = findViewById(R.id.listviewIncomplete);
 
         // Insert Dummy data
 
@@ -61,14 +66,21 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
+        init();
+
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+
+    }
+
+    private void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
-
-        init();
     }
 
     private void init(){
         lblCurrentDate.setText(DateConverter.getFullDate(new Date()));
+        loadAllTasks();
     }
 
     private void insertCategories() {
