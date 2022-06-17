@@ -1,8 +1,11 @@
 package ca.lambton.task_tech_armie_android;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
+    ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         lvIncomplete = findViewById(R.id.listviewIncomplete);
 
         // Insert Dummy data
-
         UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
         boolean firstTimeOpen = new UserSettings().getInstance(getApplicationContext()).isFirstTimeOpen();
 
@@ -68,14 +71,21 @@ public class MainActivity extends AppCompatActivity {
         }
         init();
 
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
-
+        this.launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                    }
+                    loadAllTasks();
+                });
     }
 
     private void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
     }
 
     private void init(){
@@ -93,83 +103,83 @@ public class MainActivity extends AppCompatActivity {
     private void insertTasks() {
         taskRoomDB.taskDAO().addTask(new Task(
                 "Visit Montreal",
-                new Date(),
-                new Date(),
+                new Date(1655499975),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Invest Today",
-                new Date(),
-                new Date(),
+                new Date(1655420775),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Book a room",
-                new Date(),
-                new Date(),
+                new Date(1655510355),
                 false,
                 new ArrayList<>(),
                 null,
                 1L,
-                1L
+                1L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Say hello to new friend",
-                new Date(),
-                new Date(),
+                new Date(1655769600),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                3L
+                3L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Soaps",
-                new Date(),
-                new Date(),
+                new Date(1656028800),
                 false,
                 new ArrayList<>(),
                 null,
                 null,
-                2L
+                2L,
+                null
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Hello World Program",
-                new Date(),
-                new Date(),
+                new Date(1655202600),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                3L
+                3L,
+                new Date(1655116200)
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Attend Class",
-                new Date(),
-                new Date(),
+                new Date(1655245800),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                4L
+                4L,
+                new Date(1655238600)
         ));
         taskRoomDB.taskDAO().addTask(new Task(
                 "Laundry",
-                new Date(),
-                new Date(),
+                new Date(1655227800),
                 true,
                 new ArrayList<>(),
                 null,
                 null,
-                4L
+                4L,
+                new Date(1655220600)
         ));
     }
 
@@ -206,6 +216,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewTask(View view) {
-        startActivity(new Intent(this, AddNewTask.class));
+        launcher.launch(new Intent(this, AddNewTask.class));
     }
 }
