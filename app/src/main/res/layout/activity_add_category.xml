@@ -22,6 +22,7 @@ tools:context=".AddNewCategory">
             android:id="@+id/btnBackk"
             android:layout_width="75dp"
             android:layout_height="34dp"
+            android:onClick="getBack"
             android:layout_marginTop="10dp"
             android:background="@null"
             android:scaleType="fitCenter"
@@ -53,7 +54,7 @@ tools:context=".AddNewCategory">
         <ListView
             android:id="@+id/simpleListVieww"
             android:layout_width="fill_parent"
-            android:layout_height="400dp"
+            android:layout_height="650dp"
             android:divider="@color/material_blue_grey_800"
             android:dividerHeight="1dp" />
 

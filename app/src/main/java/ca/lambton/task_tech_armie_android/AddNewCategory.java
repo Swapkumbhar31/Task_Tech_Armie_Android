@@ -1,8 +1,9 @@
 package ca.lambton.task_tech_armie_android;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ListView;
 
@@ -78,8 +79,8 @@ public class AddNewCategory extends AppCompatActivity {
         categoryListView.setAdapter(adaptor);
     }
 
-//    public void goBack(View view) {
-//        this.finish();
-//    }
+    public void getBack(View view) {
+        onBackPressed();
+    }
 
 }
