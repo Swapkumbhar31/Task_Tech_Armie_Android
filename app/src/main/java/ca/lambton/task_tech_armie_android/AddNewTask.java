@@ -68,7 +68,7 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     ImageButton btnRecorder, btnRecordingPlay;
     Boolean recorder;
     Boolean playRecording;
-    TextView txtDueDate;
+    TextView txtDueDate, txtBtnManageCategories;
     Calendar dueDate = Calendar.getInstance();
     Spinner categoriesSpinner;
     private TaskRoomDB taskRoomDB;
@@ -135,6 +135,11 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         mFileName += ImageHelper.generateUniqueFileName();
 
         init();
+
+        txtBtnManageCategories=findViewById(R.id.txtBtnAddNewCategory);
+        txtBtnManageCategories.setOnClickListener(v -> {
+            startActivity(new Intent(this, AddNewCategory.class));
+        });
 
         submitBtn.setOnClickListener(view -> {
 
