@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.lambton.task_tech_armie_android.Database.Category;
+import ca.lambton.task_tech_armie_android.Database.CategoryDAO;
 import ca.lambton.task_tech_armie_android.Database.Task;
+import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
 import ca.lambton.task_tech_armie_android.R;
 
 public class TaskListAdaptor extends BaseAdapter {
@@ -23,11 +26,13 @@ public class TaskListAdaptor extends BaseAdapter {
     Context context;
     List<Task> tasks;
     LayoutInflater inflater;
+    private TaskRoomDB taskRoomDB;
 
     public TaskListAdaptor(Context context, List<Task> tasks) {
         this.context = context;
         this.tasks = tasks;
         inflater = (LayoutInflater.from(context));
+        taskRoomDB = TaskRoomDB.getInstance(context);
     }
 
     @Override
@@ -48,6 +53,7 @@ public class TaskListAdaptor extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
+        Category category = taskRoomDB.categoryDAO().getCategoryByID(tasks.get(i).getCategoryID());
         if(view==null)
         {
             view=inflater.inflate(R.layout.task_list_adapter,null);
@@ -61,7 +67,7 @@ public class TaskListAdaptor extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.lblTaskTitle.setText(tasks.get(i).getName());
-        holder.lblTaskCategory.setText("Business");
+        holder.lblTaskCategory.setText(category.getName());
         if(tasks.get(i).isCompleted()){
             holder.btnCheck.setChecked(true);
         }else{
