@@ -85,12 +85,10 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
             due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
             name.setText(task.getName());
-            System.out.println("out" + task.getPhotos().size());
             if (task.getPhotos() == null) {
                 images_layout.setVisibility(View.GONE);
             } else if (task.getPhotos().size() == 0) {
                 images_layout.setVisibility(View.GONE);
-                System.out.println("empty");
             } else {
                 lvImageView.setVisibility(View.VISIBLE);
                 System.out.println(task.getPhotos());

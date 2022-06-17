@@ -3,6 +3,8 @@ package ca.lambton.task_tech_armie_android;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import static ca.lambton.task_tech_armie_android.Helper.ImageHelper.getBitmapFormUri;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -192,8 +194,14 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
                     final Uri imageUri = data.getData();
-                    System.out.println(imageUri);
-                    imageList.add(imageUri.toString());
+                    Bitmap selectedImage =  getBitmapFormUri(this, imageUri);
+                    String imagePath = MediaStore.Images.Media.insertImage(
+                            getContentResolver(),
+                            selectedImage,
+                            new Date().toString(),
+                            new Date().toString()
+                    );
+                    imageList.add(imagePath);
                     lvImageView.setVisibility(View.VISIBLE);
                     refreshImageView();
                 }
