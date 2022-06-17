@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
 import ca.lambton.task_tech_armie_android.Helper.ListViewSize;
 import ca.lambton.task_tech_armie_android.MainActivity;
 import ca.lambton.task_tech_armie_android.R;
+import ca.lambton.task_tech_armie_android.ViewTaskActivity;
 
 public class TaskListAdaptor extends BaseAdapter {
 
@@ -67,6 +70,7 @@ public class TaskListAdaptor extends BaseAdapter {
             holder.lblTaskCategory=view.findViewById(R.id.lblTaskCategory);
             holder.btnCheck=view.findViewById(R.id.btnCheck);
             holder.btnRemoveTask=view.findViewById(R.id.btnDeleteTask);
+            holder.llParentTask=view.findViewById(R.id.llParentTask);
             view.setTag(holder);
         }
         else {
@@ -99,6 +103,12 @@ public class TaskListAdaptor extends BaseAdapter {
             context.startActivity(intent);
         });
 
+        holder.llParentTask.setOnClickListener(v -> {
+            Intent intent=new Intent(context, ViewTaskActivity.class);
+            intent.putExtra("taskId", tasks.get(i).getId());
+            context.startActivity(intent);
+        });
+
         return view;
     }
 
@@ -106,5 +116,6 @@ public class TaskListAdaptor extends BaseAdapter {
         private TextView lblTaskTitle, lblTaskCategory;
         private CheckBox btnCheck;
         private ImageButton btnRemoveTask;
+        private LinearLayout llParentTask;
     }
 }
