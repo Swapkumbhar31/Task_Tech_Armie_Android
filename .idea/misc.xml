@@ -12,6 +12,10 @@
         <entry key="app/src/main/res/drawable/view_rounded_border.xml" value="0.2185" />
         <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20700225830078128" />
+        <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.12272727272727273" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22400512695312502" />
+        <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_view_task2.xml" value="0.2520833333333333" />
         <entry key="app/src/main/res/layout/sorting_popup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/task_list_adapter.xml" value="0.2691653616060087" />
       </map>
