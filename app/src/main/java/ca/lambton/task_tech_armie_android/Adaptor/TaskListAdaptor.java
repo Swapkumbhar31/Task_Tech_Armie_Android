@@ -38,10 +38,12 @@ public class TaskListAdaptor extends BaseAdapter {
     List<Task> tasks;
     LayoutInflater inflater;
     private TaskRoomDB taskRoomDB;
+    private Runnable callback;
 
-    public TaskListAdaptor(Context context, List<Task> tasks) {
+    public TaskListAdaptor(Context context, List<Task> tasks, Runnable callback) {
         this.context = context;
         this.tasks = tasks;
+        this.callback = callback;
         inflater = (LayoutInflater.from(context));
         taskRoomDB = TaskRoomDB.getInstance(context);
     }
@@ -94,16 +96,16 @@ public class TaskListAdaptor extends BaseAdapter {
                 tasks.get(i).setCompleted(true);
             }
             taskRoomDB.taskDAO().update(tasks.get(i));
-            Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            context.startActivity(intent);
+            if (callback != null) {
+                callback.run();
+            }
         });
 
         holder.btnRemoveTask.setOnClickListener(v -> {
             taskRoomDB.taskDAO().delete(tasks.get(i));
-            Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            context.startActivity(intent);
+            if (callback != null) {
+                callback.run();
+            }
         });
 
         view.setOnClickListener(view1 -> {

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
     EditText txtSearch;
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                init();
+            }
+        };
     }
 
     private void setTaskInfo(){
@@ -83,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
     public void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
         setTaskInfo();
@@ -93,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
     private void loadFilteredTasks(){
         completedTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), true);
         inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), false);
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
         setTaskInfo();
@@ -229,8 +236,8 @@ public class MainActivity extends AppCompatActivity {
         btnTitleSort.setOnClickListener(v -> {
             completedTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(true);
             inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(false);
-            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
             ListViewSize.getListViewSize(lvIncomplete);
             ListViewSize.getListViewSize(lvCompleted);
             alertDialog.cancel();
@@ -239,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
         btnDateSort.setOnClickListener(v -> {
             completedTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(true);
             inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(false);
-            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
             ListViewSize.getListViewSize(lvIncomplete);
             ListViewSize.getListViewSize(lvCompleted);
             alertDialog.cancel();
