@@ -47,6 +47,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     ImageView ivChecked;
     private TaskRoomDB taskRoomDB;
     RecyclerView lvImageView;
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,13 @@ public class ViewTaskActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                loadAllTasks();
+            }
+        };
 
         loadAllTasks();
         if (task != null) {
@@ -106,7 +114,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onClick(View view) {
                 taskRoomDB.taskDAO().delete(task);
                 finish();
-
             }
         });
 
@@ -143,8 +150,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         inCompleteTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(), false);
         category = taskRoomDB.categoryDAO().getCategoryByID(task.getCategoryID());
         categories.setText(category.getName());
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
         if (task.isCompleted()) {
