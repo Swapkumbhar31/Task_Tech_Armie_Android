@@ -11,15 +11,15 @@
         <entry key="app/src/main/res/drawable/success_edittext_rounded_border.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/upload_view.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/view_rounded_border.xml" value="0.2185" />
-        <entry key="app/src/main/res/layout/activity_add_category.xml" value="0.11296859169199595" />
+        <entry key="app/src/main/res/layout/activity_add_category.xml" value="0.24699416542246472" />
         <entry key="app/src/main/res/layout/activity_add_new_category.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_new_category2.xml" value="0.11296859169199595" />
-        <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.2796295166015625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22400512695312502" />
         <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_view_task.xml" value="0.22249450683593752" />
         <entry key="app/src/main/res/layout/activity_view_task2.xml" value="0.2520833333333333" />
-        <entry key="app/src/main/res/layout/category_list_adapter.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/category_list_adapter.xml" value="0.409979248046875" />
         <entry key="app/src/main/res/layout/content_add_new_category.xml" value="0.11296859169199595" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.11296859169199595" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.11296859169199595" />

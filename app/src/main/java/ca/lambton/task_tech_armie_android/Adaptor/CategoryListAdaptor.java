@@ -59,7 +59,7 @@ public class CategoryListAdaptor extends BaseAdapter {
             holder=new ViewHolder();
             holder.lblCategoryName=view.findViewById(R.id.tv_name);
             holder.btnDelete=view.findViewById(R.id.btn_delete);
-
+            holder.tv_tasksCount=view.findViewById(R.id.tv_tasksCount)
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -73,8 +73,8 @@ public class CategoryListAdaptor extends BaseAdapter {
         else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.lblCategoryName.setText(category.get(i).getName());
-
+        holder.lblCategoryName.setText(taskRoomDB.categoryDAO().getCategoriesWithTaskCount().toString());
+        holder.tv_tasksCount.setText(category.get(i).);
         return view;
     }
 
@@ -90,5 +90,6 @@ public class CategoryListAdaptor extends BaseAdapter {
     static class ViewHolder{
         private TextView lblCategoryName;
         private Button btnDelete;
+        private TextView tv_tasksCount;
     }
 }
