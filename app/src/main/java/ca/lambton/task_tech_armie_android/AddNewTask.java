@@ -2,19 +2,30 @@ package ca.lambton.task_tech_armie_android;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+
+import ca.lambton.task_tech_armie_android.Database.Category;
+import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+
 
 public class AddNewTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -23,17 +34,28 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     Boolean playRecording;
     TextView txtDueDate;
     Calendar dueDate = Calendar.getInstance();
+    Spinner categoriesSpinner;
+    private TaskRoomDB taskRoomDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
         Objects.requireNonNull(getSupportActionBar()).hide();
+        taskRoomDB = TaskRoomDB.getInstance(this);
 
         btnRecorder = findViewById(R.id.btnRecorder);
         btnRecordingPlay = findViewById(R.id.btnPlayRecording);
         txtDueDate = findViewById(R.id.txtDueDate);
+        categoriesSpinner = findViewById(R.id.categories);
         txtDueDate.setText(DateFormat.format("yyyy-MM-dd hh:mm a", dueDate));
+        List<String> listOfItems = new ArrayList<>();
+        for (Category category: taskRoomDB.categoryDAO().getAllCategories()) {
+            listOfItems.add(category.getName());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listOfItems);
+
+        categoriesSpinner.setAdapter(spinnerAdapter);
 
         txtDueDate.setOnClickListener(view -> {
             Calendar calendar = Calendar.getInstance();
