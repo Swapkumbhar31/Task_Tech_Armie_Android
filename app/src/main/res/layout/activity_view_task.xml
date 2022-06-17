@@ -55,28 +55,6 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textStyle="bold" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="2dp"
-                    android:background="@color/border_color"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:padding="10dp"
-                    android:text="@string/entry_date"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_entry_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:padding="10dp"
-                    android:text="@string/_29th_april_2022"
-                    android:textStyle="italic" />
 
                 <View
                     android:layout_width="match_parent"
@@ -197,17 +175,19 @@
 
 
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="2dp"
-                android:background="@color/border_color"/>
+
 
             <LinearLayout
+                android:id="@+id/audio_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="2dp"
+                    android:background="@color/border_color"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -238,7 +218,9 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:id="@+id/btn_play_pause_mp3"
-                        android:background="@drawable/play"
+                        android:background="@null"
+                        android:src="@drawable/play"
+                        android:scaleType="fitXY"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="240dp"
                         />
