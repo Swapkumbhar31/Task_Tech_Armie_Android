@@ -3,6 +3,7 @@ package ca.lambton.task_tech_armie_android.Adaptor;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,13 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.lambton.task_tech_armie_android.AddNewTask;
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.CategoryDAO;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.Helper.ListViewSize;
+import ca.lambton.task_tech_armie_android.MainActivity;
 import ca.lambton.task_tech_armie_android.R;
 
 public class TaskListAdaptor extends BaseAdapter {
@@ -74,6 +78,20 @@ public class TaskListAdaptor extends BaseAdapter {
             holder.btnCheck.setChecked(false);
         }
 
+        holder.btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tasks.get(i).isCompleted()){
+                    tasks.get(i).setCompleted(false);
+                }else{
+                    tasks.get(i).setCompleted(true);
+                }
+                taskRoomDB.taskDAO().update(tasks.get(i));
+                Intent intent=new Intent(context,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                context.startActivity(intent);
+            }
+        });
 
         return view;
     }

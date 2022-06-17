@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadAllTasks(){
+    public void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
@@ -232,11 +232,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnTitleSort.setOnClickListener(v -> {
-
+            completedTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(true);
+            inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(false);
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            ListViewSize.getListViewSize(lvIncomplete);
+            ListViewSize.getListViewSize(lvCompleted);
+            alertDialog.cancel();
         });
 
         btnDateSort.setOnClickListener(v -> {
-
+            completedTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(true);
+            inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(false);
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            ListViewSize.getListViewSize(lvIncomplete);
+            ListViewSize.getListViewSize(lvCompleted);
+            alertDialog.cancel();
         });
     }
 
