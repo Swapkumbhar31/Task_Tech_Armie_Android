@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public class ViewTaskActivity extends AppCompatActivity {
     TextView categories, name;
     Category category;
     Task task;
+    RelativeLayout no_task_incompleted , no_task_completed ;
     ImageView ivChecked;
     private TaskRoomDB taskRoomDB;
     RecyclerView lvImageView;
@@ -69,6 +71,8 @@ public class ViewTaskActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         lvImageView = findViewById(R.id.lvImagePreview);
         lvImageView.setLayoutManager(layoutManager);
+        no_task_incompleted = findViewById(R.id.no_task_incompleted);
+        no_task_completed = findViewById(R.id.no_task_completed);
 
         lvImageView.setVisibility(View.GONE);
 
@@ -152,6 +156,22 @@ public class ViewTaskActivity extends AppCompatActivity {
         } else {
             ivChecked.setVisibility(View.VISIBLE);
         }
+
+        if (completedTasks.size() == 0 )
+        {
+            no_task_completed.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            no_task_completed.setVisibility(View.GONE);
+        }
+         if(inCompleteTasks.size() == 0 )
+        {
+            no_task_incompleted.setVisibility(View.VISIBLE);
+        }
+         else {
+             no_task_incompleted.setVisibility(View.GONE);
+         }
     }
 
 
