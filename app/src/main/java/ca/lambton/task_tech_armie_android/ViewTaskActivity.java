@@ -2,20 +2,25 @@ package ca.lambton.task_tech_armie_android;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -25,116 +30,71 @@ import ca.lambton.task_tech_armie_android.Adaptor.TaskListAdaptor;
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.Task;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
+import ca.lambton.task_tech_armie_android.Helper.DateConverter;
 import ca.lambton.task_tech_armie_android.Helper.ListViewSize;
 
 public class ViewTaskActivity extends AppCompatActivity {
 
+    private MediaPlayer mPlayer;
+    private static String mFileName = null;
+    private Boolean playRecording = false;
 
-    TextView due_date;
-    ImageButton audio_play;
-    Button add_subtask;
-    Button delete_task;
-
-    MediaPlayer mediaPlayer;
-    LinearLayout audio_layout, images_layout;
-
-    ListView lvCompleted, lvIncomplete;
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
-    TextView categories, name;
-    Category category;
-    Task task;
-    ImageView ivChecked;
-    private TaskRoomDB taskRoomDB;
+
+    TextView dueDate, taskName, taskCategory, lblIncomplete, lblComplete;
     RecyclerView lvImageView;
-    Runnable runnable;
+    ImageButton btnMarkAsCompleted, btnAudioPlay;
+    ListView lvInComplete, lvComplete;
+    Button btnAddSubTask, btnDeleteTask;
+
+    private TaskRoomDB taskRoomDB;
+
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
-
-        audio_play = findViewById(R.id.btn_play_pause_mp3);
-        due_date = findViewById(R.id.tv_due_date);
-        add_subtask = findViewById(R.id.btn_add_new_task);
-        delete_task = findViewById(R.id.btn_delete_task);
-        mediaPlayer = MediaPlayer.create(this, R.raw.song);
-        audio_layout = findViewById(R.id.audio_ll);
-        images_layout = findViewById(R.id.images_layout);
-        name = findViewById(R.id.tv_name);
-        mediaPlayer.setVolume(5f, 5f);
-        lvCompleted = findViewById(R.id.listviewCompleted);
-        lvIncomplete = findViewById(R.id.listviewIncomplete);
-        categories = findViewById(R.id.categories);
-        ivChecked = findViewById(R.id.iv_checked);
-        LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
-        lvImageView = findViewById(R.id.lvImagePreview);
-        lvImageView.setLayoutManager(layoutManager);
-
-        lvImageView.setVisibility(View.GONE);
-
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
 
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                loadAllTasks();
-            }
-        };
+        dueDate = findViewById(R.id.lblDueDate);
+        taskName = findViewById(R.id.lblTaskTitle);
+        taskCategory = findViewById(R.id.lblCategory);
+        lblIncomplete = findViewById(R.id.lblIncomplete);
+        lblComplete = findViewById(R.id.lblCompleted);
+        lvImageView = findViewById(R.id.lvPhotos);
+        btnMarkAsCompleted = findViewById(R.id.btnMarkAsComplete);
+        btnAudioPlay = findViewById(R.id.btnDetailsPlayRecording);
+        lvInComplete = findViewById(R.id.subListviewIncomplete);
+        lvComplete = findViewById(R.id.subListviewCompleted);
+        btnAddSubTask = findViewById(R.id.btn_add_sub_task);
+        btnDeleteTask = findViewById(R.id.btn_delete_parent_task);
 
-        loadAllTasks();
-        if (task != null) {
-            if (task.getAudioPath() == null) {
-                audio_layout.setVisibility(View.GONE);
-            } else if (task.getAudioPath().isEmpty()) {
-                audio_layout.setVisibility(View.GONE);
-            }
-            due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
-            name.setText(task.getName());
-            if (task.getPhotos() == null) {
-                images_layout.setVisibility(View.GONE);
-            } else if (task.getPhotos().size() == 0) {
-                images_layout.setVisibility(View.GONE);
-            } else {
-                lvImageView.setVisibility(View.VISIBLE);
-                System.out.println(task.getPhotos());
-                lvImageView.setAdapter(new ImageListAdapter(this, task.getPhotos()));
-            }
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Long value = extras.getLong("taskId");
+            task = taskRoomDB.taskDAO().getTaskById(value);
         }
-        add_subtask.setOnClickListener(view -> {
-            Intent intent = new Intent(this, AddNewTask.class);
-            intent.putExtra("parentTaskId", task.getId());
-            startActivity(intent);
-        });
+        init();
 
-        delete_task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskRoomDB.taskDAO().delete(task);
-                finish();
-            }
-        });
-
-        audio_play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mediaPlayer.isPlaying()) {
-                    audio_play.setImageResource(R.drawable.play);
-                    mediaPlayer.pause();
-                } else {
-                    audio_play.setImageResource(R.drawable.pause);
-                    mediaPlayer.start();
-                }
-            }
-        });
-
-        ivChecked.setOnClickListener(view -> {
+        btnMarkAsCompleted.setOnClickListener(v -> {
             task.setCompleted(true);
-            task.setCompletedAt(new Date());
             taskRoomDB.taskDAO().update(task);
-            loadAllTasks();
+            Toast.makeText(this, "Task is added to completed category", Toast.LENGTH_LONG).show();
+        });
+
+        btnAddSubTask.setOnClickListener(v -> {
+
+        });
+
+        btnDeleteTask.setOnClickListener(v -> {
+            taskRoomDB.taskDAO().delete(task);
+            Intent intent=new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            this.startActivity(intent);
         });
     }
 
@@ -142,29 +102,66 @@ public class ViewTaskActivity extends AppCompatActivity {
         this.finish();
     }
 
-    private void loadAllTasks() {
-        Intent i = getIntent();
-        long taskId = i.getLongExtra("taskId", 0L);
-        task = taskRoomDB.taskDAO().getTaskById(taskId);
-        completedTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(), true);
-        inCompleteTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(), false);
-        category = taskRoomDB.categoryDAO().getCategoryByID(task.getCategoryID());
-        categories.setText(category.getName());
-        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks, runnable));
-        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks, runnable));
-        ListViewSize.getListViewSize(lvIncomplete);
-        ListViewSize.getListViewSize(lvCompleted);
-        if (task.isCompleted()) {
-            ivChecked.setVisibility(View.GONE);
-        } else {
-            ivChecked.setVisibility(View.VISIBLE);
+    private void init(){
+        taskName.setText(task.getName());
+        dueDate.setText(DateConverter.getFullDate(task.getEndDate()));
+        taskCategory.setText(taskRoomDB.categoryDAO().getCategoryByID(task.getCategoryID()).getName());
+
+        if(task.getPhotos().size() > 0){
+            lvImageView.setAdapter(new ImageListAdapter(this, task.getPhotos()));
+            lvImageView.setVisibility(View.VISIBLE);
+        }
+
+        if(task.getAudioPath()!=null){
+            mFileName = task.getAudioPath();
+            btnAudioPlay.setImageResource(R.drawable.play);
+        }else{
+            btnAudioPlay.setEnabled(false);
         }
     }
 
+//    private void loadAllTasks() {
+//        Intent i = getIntent();
+//        long taskId = i.getLongExtra("taskId", 0L);
+//        task = taskRoomDB.taskDAO().getTaskById(taskId);
+//        completedTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(), true);
+//        inCompleteTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(), false);
+//        category = taskRoomDB.categoryDAO().getCategoryByID(task.getCategoryID());
+//        categories.setText(category.getName());
+//        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+//        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+//        ListViewSize.getListViewSize(lvIncomplete);
+//        ListViewSize.getListViewSize(lvCompleted);
+//        if (task.isCompleted()) {
+//            ivChecked.setVisibility(View.GONE);
+//        } else {
+//            ivChecked.setVisibility(View.VISIBLE);
+//        }
+//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadAllTasks();
+    public void playRecordingPlayed(View view) {
+        if (playRecording) {
+            playRecording = false;
+            btnAudioPlay.setImageResource(R.drawable.play);
+            mPlayer.release();
+            mPlayer = null;
+
+            Toast.makeText(this, "Audio player stopped", Toast.LENGTH_LONG).show();
+        } else {
+            playRecording = true;
+            btnAudioPlay.setImageResource(R.drawable.pause);
+
+            mPlayer = new MediaPlayer();
+
+            try {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+                mPlayer.start();
+                Toast.makeText(this, "Audio player started", Toast.LENGTH_LONG).show();
+
+            } catch (IOException e) {
+                Log.e("TAG", "prepare() failed");
+            }
+        }
     }
 }
