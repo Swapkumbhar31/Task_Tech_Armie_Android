@@ -2,6 +2,7 @@ package ca.lambton.task_tech_armie_android;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -41,6 +42,7 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     private TaskRoomDB taskRoomDB;
     EditText txtNewTask;
     Button submitBtn;
+    long parentTaskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         setContentView(R.layout.activity_add_new_task);
         Objects.requireNonNull(getSupportActionBar()).hide();
         taskRoomDB = TaskRoomDB.getInstance(this);
+
+        Intent intent = this.getIntent();
+        parentTaskId = intent.getLongExtra("parentTaskId", 0L);
 
         btnRecorder = findViewById(R.id.btnRecorder);
         btnRecordingPlay = findViewById(R.id.btnPlayRecording);
@@ -91,7 +96,7 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
                             false,
                             new ArrayList<>(),
                             null,
-                            null,
+                            parentTaskId > 0L ? parentTaskId : null,
                             1L,
                             null
                             )

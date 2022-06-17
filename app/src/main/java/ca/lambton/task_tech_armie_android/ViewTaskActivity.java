@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,7 +35,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     ImageButton audio_play;
     Button add_subtask ;
     Button delete_task ;
-    Button go_back ;
+    TextView go_back ;
+
     MediaPlayer mediaPlayer;
     LinearLayout audio_layout ,images_layout ;
 
@@ -44,8 +46,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     List<Task> inCompleteTasks;
     TextView categories , name;
     Category category;
-    //Boolean isPlaying  = false ;
     Task task;
+    ImageView ivChecked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +66,17 @@ public class ViewTaskActivity extends AppCompatActivity {
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
         categories = findViewById(R.id.categories);
+        ivChecked = findViewById(R.id.iv_checked);
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         taskRoomDB = TaskRoomDB.getInstance(this);
-        task = taskRoomDB.taskDAO().getTaskById(2L);
 
 
 
+
+
+        loadAllTasks();
         if (task != null) {
             if (task.getAudioPath() == null) {
                 audio_layout.setVisibility(View.GONE);
@@ -80,7 +85,6 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
             due_date.setText(DateFormat.format("yyyy-MM-dd hh:mm a", task.getEndDate()));
             name.setText(task.getName());
-            loadAllTasks();
             System.out.println("out" + task.getPhotos().size());
             if (task.getPhotos() == null)
             {
@@ -94,7 +98,11 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         }
 
-
+        add_subtask.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AddNewTask.class);
+            intent.putExtra("parentTaskId", task.getId());
+            startActivity(intent);
+        });
 
         delete_task.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,31 +125,48 @@ public class ViewTaskActivity extends AppCompatActivity {
 
                 if(mediaPlayer.isPlaying()) {
                     audio_play.setImageResource(R.drawable.play);
-
                     mediaPlayer.pause();
                 }
                 else
                 {
                     audio_play.setImageResource(R.drawable.pause);
-
                     mediaPlayer.start();
-
                 }
 
             }
         });
 
+        ivChecked.setOnClickListener(view -> {
+            task.setCompleted(true);
+            task.setCompletedAt(new Date());
+            taskRoomDB.taskDAO().update(task);
+            loadAllTasks();
+        });
     }
 
     private void loadAllTasks(){
-        completedTasks = taskRoomDB.taskDAO().getSubtasks(getTaskId(),true);
+        Intent i = getIntent();
+        long taskId = i.getLongExtra("taskId", 0L);
+        task = taskRoomDB.taskDAO().getTaskById(taskId);
+        completedTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(),true);
         inCompleteTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(),false);
-        category = taskRoomDB.categoryDAO().getCategoryByID(task.getId());
+        category = taskRoomDB.categoryDAO().getCategoryByID(task.getCategoryID());
         categories.setText(category.getName());
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
         lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
+        if (task.isCompleted()) {
+            ivChecked.setVisibility(View.GONE);
+        } else {
+            ivChecked.setVisibility(View.VISIBLE);
+        }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAllTasks();
+    }
 }
