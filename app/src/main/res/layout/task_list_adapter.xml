@@ -22,7 +22,7 @@
             android:text="Visit Montreal"
             android:padding="3dp"
             android:textColor="@color/text_color"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/lblTaskCategory"
@@ -33,6 +33,6 @@
             android:padding="3dp"
             android:layout_marginBottom="3dp"
             android:textColor="@color/text_color"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>

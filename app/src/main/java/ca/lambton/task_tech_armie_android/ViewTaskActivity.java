@@ -110,5 +110,4 @@ public class ViewTaskActivity extends AppCompatActivity {
         ListViewSize.getListViewSize(lvCompleted);
     }
 
-
 }

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
-    ActivityResultLauncher<Intent> launcher;
+    EditText txtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         lblTaskInfo = findViewById(R.id.lblTaskCompletionInfo);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
+        txtSearch = findViewById(R.id.txtSearch);
 
         // Insert Dummy data
         UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
@@ -70,16 +71,6 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
-        init();
-
-        this.launcher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                    }
-                    loadAllTasks();
-                });
     }
 
     private void loadAllTasks(){
@@ -91,8 +82,25 @@ public class MainActivity extends AppCompatActivity {
         ListViewSize.getListViewSize(lvCompleted);
     }
 
+    private void loadFilteredTasks(){
+        completedTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), true);
+        inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), false);
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        ListViewSize.getListViewSize(lvIncomplete);
+        ListViewSize.getListViewSize(lvCompleted);
+    }
+
     private void init(){
         lblCurrentDate.setText(DateConverter.getFullDate(new Date()));
+        txtSearch.setOnKeyListener((view, i, keyEvent) -> {
+            if (txtSearch.getText().toString().isEmpty()) {
+                loadAllTasks();
+            } else {
+                loadFilteredTasks();
+            }
+            return false;
+        });
         loadAllTasks();
     }
 
@@ -219,6 +227,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewTask(View view) {
-        launcher.launch(new Intent(this, AddNewTask.class));
+        startActivity(new Intent(this, AddNewTask.class));
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
     }
 }

@@ -3,6 +3,7 @@ package ca.lambton.task_tech_armie_android.Adaptor;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+
 import java.util.List;
 
 import ca.lambton.task_tech_armie_android.Database.Task;
+import ca.lambton.task_tech_armie_android.MainActivity;
 import ca.lambton.task_tech_armie_android.R;
+import ca.lambton.task_tech_armie_android.ViewTaskActivity;
 
 public class TaskListAdaptor extends BaseAdapter {
 
@@ -62,13 +67,12 @@ public class TaskListAdaptor extends BaseAdapter {
         }
         holder.lblTaskTitle.setText(tasks.get(i).getName());
         holder.lblTaskCategory.setText("Business");
-        if(tasks.get(i).isCompleted()){
-            holder.btnCheck.setChecked(true);
-        }else{
-            holder.btnCheck.setChecked(false);
-        }
-
-
+        holder.btnCheck.setChecked(tasks.get(i).isCompleted());
+        view.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context, ViewTaskActivity.class);
+            intent.putExtra("taskId", tasks.get(i).getId());
+            context.startActivity(intent);
+        });
         return view;
     }
 
@@ -76,4 +80,5 @@ public class TaskListAdaptor extends BaseAdapter {
         private TextView lblTaskTitle, lblTaskCategory;
         private CheckBox btnCheck;
     }
+
 }
