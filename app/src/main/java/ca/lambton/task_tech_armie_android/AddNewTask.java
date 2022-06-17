@@ -6,6 +6,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.DataSetObserver;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -69,7 +71,8 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
     private TaskRoomDB taskRoomDB;
     EditText txtNewTask;
     Button submitBtn;
-    ListView lvImageView;
+    long parentTaskId;
+    RecyclerView lvImageView;
 
     List<String> imageList = new ArrayList<>();
 
@@ -89,14 +92,20 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         Objects.requireNonNull(getSupportActionBar()).hide();
         taskRoomDB = TaskRoomDB.getInstance(this);
 
+        Intent intent = this.getIntent();
+        parentTaskId = intent.getLongExtra("parentTaskId", 0L);
+
         btnRecorder = findViewById(R.id.btnRecorder);
         btnRecordingPlay = findViewById(R.id.btnPlayRecording);
         txtDueDate = findViewById(R.id.txtDueDate);
         categoriesSpinner = findViewById(R.id.categories);
         submitBtn = findViewById(R.id.submitBtn);
         txtNewTask = findViewById(R.id.txtNewTask);
-
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         lvImageView = findViewById(R.id.lvImagePreview);
+        lvImageView.setLayoutManager(layoutManager);
+
+        lvImageView.setVisibility(View.GONE);
 
         txtDueDate.setText(DateFormat.format("yyyy-MM-dd hh:mm a", dueDate));
         List<String> listOfItems = new ArrayList<>();
@@ -120,7 +129,7 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         btnRecordingPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48_disabled);
 
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
+        mFileName +=  (new Date()) + "/.3gp";
 
         init();
 
@@ -139,9 +148,9 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
                             txtNewTask.getText().toString(),
                             dueDate.getTime(),
                             false,
-                            new ArrayList<>(),
+                            imageList,
                             null,
-                            null,
+                            parentTaskId > 0L ? parentTaskId : null,
                             1L,
                             null
                             )
@@ -182,26 +191,10 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         try {
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
-//                    Uri selectedImageUri = data.getData();
-//                    // Get the path from the Uri
-//                    final String path = getPathFromURI(selectedImageUri);
-//                    Log.d("Tag","================="+selectedImageUri.getPath());
-//                    if (path != null) {
-//                        Log.d("Tag","================="+path);
-//                        File f = new File(path);
-//                        selectedImageUri = Uri.fromFile(f);
-//                    }
-//                    // Set the image in ImageView
-//                    //imgView.setImageURI(selectedImageUri);
-//                    imageList.add(selectedImageUri.toString());
-//                    refreshImageView();
                     final Uri imageUri = data.getData();
-                    File file = new File(imageUri.getPath());
-                    Log.d("PATH", file.getPath());
-                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    //imgView.setImageBitmap(selectedImage);
+                    System.out.println(imageUri);
                     imageList.add(imageUri.toString());
+                    lvImageView.setVisibility(View.VISIBLE);
                     refreshImageView();
                 }
             }
@@ -210,66 +203,19 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-//    private void storeImage(Bitmap image) {
-//        File pictureFile = getOutputMediaFile();
-//        if (pictureFile == null) {
-//            Log.d("TAG",
-//                    "Error creating media file, check storage permissions: ");// e.getMessage());
-//            return;
-//        }
-//        try {
-//            FileOutputStream fos = new FileOutputStream(pictureFile);
-//            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            Log.d("TAG", "File not found: " + e.getMessage());
-//        } catch (IOException e) {
-//            Log.d("TAG", "Error accessing file: " + e.getMessage());
-//        }
-//    }
-//
-//    private  File getOutputMediaFile(){
-//        // To be safe, you should check that the SDCard is mounted
-//        // using Environment.getExternalStorageState() before doing this.
-//        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
-//                + "/Android/data/"
-//                + getApplicationContext().getPackageName()
-//                + "/Files");
-//
-//        // This location works best if you want the created images to be shared
-//        // between applications and persist after your app has been uninstalled.
-//
-//        // Create the storage directory if it does not exist
-//        if (! mediaStorageDir.exists()){
-//            if (! mediaStorageDir.mkdirs()){
-//                return null;
-//            }
-//        }
-//        // Create a media file name
-//        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
-//        File mediaFile;
-//        String mImageName="MI_"+ timeStamp +".jpg";
-//        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
-//        return mediaFile;
-//    }
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // this method is called when user will
-        // grant the permission for audio recording.
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_AUDIO_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
-                        Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
-                    }
+        if (requestCode == REQUEST_AUDIO_PERMISSION_CODE) {
+            if (grantResults.length > 0) {
+                boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                if (permissionToRecord && permissionToStore) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
                 }
-                break;
+            }
         }
     }
 
@@ -324,7 +270,6 @@ public class AddNewTask extends AppCompatActivity implements DatePickerDialog.On
         }else{
             RequestPermissions();
         }
-
     }
 
     public void playRecordingPlayed(View view) {

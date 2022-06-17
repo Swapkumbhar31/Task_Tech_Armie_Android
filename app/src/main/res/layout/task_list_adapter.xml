@@ -27,7 +27,7 @@
             android:padding="3dp"
             android:text="Visit Montreal"
             android:textColor="@color/text_color"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:padding="3dp"
             android:text="Finance"
             android:textColor="@color/text_color"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ImageButton

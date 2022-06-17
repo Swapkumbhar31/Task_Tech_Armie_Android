@@ -17,12 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+
 import java.util.List;
 
 import ca.lambton.task_tech_armie_android.AddNewTask;
 import ca.lambton.task_tech_armie_android.Database.Category;
 import ca.lambton.task_tech_armie_android.Database.CategoryDAO;
 import ca.lambton.task_tech_armie_android.Database.Task;
+import ca.lambton.task_tech_armie_android.MainActivity;
 import ca.lambton.task_tech_armie_android.Database.TaskRoomDB;
 import ca.lambton.task_tech_armie_android.Helper.ListViewSize;
 import ca.lambton.task_tech_armie_android.MainActivity;
@@ -103,12 +106,11 @@ public class TaskListAdaptor extends BaseAdapter {
             context.startActivity(intent);
         });
 
-        holder.llParentTask.setOnClickListener(v -> {
-            Intent intent=new Intent(context, ViewTaskActivity.class);
+        view.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context, ViewTaskActivity.class);
             intent.putExtra("taskId", tasks.get(i).getId());
             context.startActivity(intent);
         });
-
         return view;
     }
 

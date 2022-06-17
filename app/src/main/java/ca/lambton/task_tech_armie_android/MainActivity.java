@@ -44,11 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     TextView lblCurrentDate, lblTaskInfo;
     ListView lvCompleted, lvIncomplete;
-    EditText txtSearch;
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
-    ActivityResultLauncher<Intent> launcher;
+    EditText txtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,35 +73,6 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
-        init();
-
-        this.launcher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                    }
-                    loadAllTasks();
-                });
-
-        txtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                completedTasks = taskRoomDB.taskDAO().searchTaskByName(s.toString(), true);
-                inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(s.toString(), false);
-                lvIncomplete.setAdapter(new TaskListAdaptor(getApplicationContext(), inCompleteTasks));
-                lvCompleted.setAdapter(new TaskListAdaptor(getApplicationContext(), completedTasks));
-                ListViewSize.getListViewSize(lvIncomplete);
-                ListViewSize.getListViewSize(lvCompleted);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        setTaskInfo();
     }
 
     private void setTaskInfo(){
@@ -117,10 +87,29 @@ public class MainActivity extends AppCompatActivity {
         lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
+        setTaskInfo();
+    }
+
+    private void loadFilteredTasks(){
+        completedTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), true);
+        inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), false);
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        ListViewSize.getListViewSize(lvIncomplete);
+        ListViewSize.getListViewSize(lvCompleted);
+        setTaskInfo();
     }
 
     private void init(){
         lblCurrentDate.setText(DateConverter.getFullDate(new Date()));
+        txtSearch.setOnKeyListener((view, i, keyEvent) -> {
+            if (txtSearch.getText().toString().isEmpty()) {
+                loadAllTasks();
+            } else {
+                loadFilteredTasks();
+            }
+            return false;
+        });
         loadAllTasks();
     }
 
@@ -259,6 +248,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewTask(View view) {
-        launcher.launch(new Intent(this, AddNewTask.class));
+        startActivity(new Intent(this, AddNewTask.class));
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
     }
 }
