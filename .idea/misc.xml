@@ -6,12 +6,16 @@
         <entry key="../../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/all_rounded_image.xml" value="0.11" />
         <entry key="app/src/main/res/drawable/edittext_rounded_border.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_48_disabled.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/plain_button.xml" value="0.2185" />
         <entry key="app/src/main/res/drawable/success_edittext_rounded_border.xml" value="0.168" />
         <entry key="app/src/main/res/drawable/upload_view.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/view_all_rounded_border.xml" value="0.11" />
         <entry key="app/src/main/res/drawable/view_rounded_border.xml" value="0.2185" />
+        <entry key="app/src/main/res/layout/activity_add_category.xml" value="0.1761436511329628" />
+        <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_add_new_task.xml" value="0.12272727272727273" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22400512695312502" />
         <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.25" />
