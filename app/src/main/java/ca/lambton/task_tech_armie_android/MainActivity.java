@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
-    ActivityResultLauncher<Intent> launcher;
+    EditText txtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         lblTaskInfo = findViewById(R.id.lblTaskCompletionInfo);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
+        txtSearch = findViewById(R.id.txtSearch);
 
         // Insert Dummy data
         UserSettings userSettings = new UserSettings().getInstance(getApplicationContext());
@@ -70,29 +73,43 @@ public class MainActivity extends AppCompatActivity {
             insertTasks();
             userSettings.setIsFirstTimeOpen(false);
         }
-        init();
-
-        this.launcher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                    }
-                    loadAllTasks();
-                });
     }
 
-    private void loadAllTasks(){
+    private void setTaskInfo(){
+        String info = inCompleteTasks.size() + " incomplete, "  + completedTasks.size() + " completed";
+        lblTaskInfo.setText(info);
+    }
+
+    public void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getAllTasks(true);
         inCompleteTasks = taskRoomDB.taskDAO().getAllTasks(false);
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
         lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
         ListViewSize.getListViewSize(lvIncomplete);
         ListViewSize.getListViewSize(lvCompleted);
+        setTaskInfo();
+    }
+
+    private void loadFilteredTasks(){
+        completedTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), true);
+        inCompleteTasks = taskRoomDB.taskDAO().searchTaskByName(txtSearch.getText().toString(), false);
+        lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+        lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+        ListViewSize.getListViewSize(lvIncomplete);
+        ListViewSize.getListViewSize(lvCompleted);
+        setTaskInfo();
     }
 
     private void init(){
         lblCurrentDate.setText(DateConverter.getFullDate(new Date()));
+        txtSearch.setOnKeyListener((view, i, keyEvent) -> {
+            if (txtSearch.getText().toString().isEmpty()) {
+                loadAllTasks();
+            } else {
+                loadFilteredTasks();
+            }
+            return false;
+        });
         loadAllTasks();
     }
 
@@ -210,15 +227,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnTitleSort.setOnClickListener(v -> {
-
+            completedTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(true);
+            inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByTitle(false);
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            ListViewSize.getListViewSize(lvIncomplete);
+            ListViewSize.getListViewSize(lvCompleted);
+            alertDialog.cancel();
         });
 
         btnDateSort.setOnClickListener(v -> {
-
+            completedTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(true);
+            inCompleteTasks = taskRoomDB.taskDAO().getAllTasksSortByEndDate(false);
+            lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
+            lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
+            ListViewSize.getListViewSize(lvIncomplete);
+            ListViewSize.getListViewSize(lvCompleted);
+            alertDialog.cancel();
         });
     }
 
     public void addNewTask(View view) {
-        launcher.launch(new Intent(this, AddNewTask.class));
+        startActivity(new Intent(this, AddNewTask.class));
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
     }
 }
