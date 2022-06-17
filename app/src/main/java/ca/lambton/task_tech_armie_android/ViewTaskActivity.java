@@ -39,6 +39,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     private TaskRoomDB taskRoomDB;
     List<Task> completedTasks;
     List<Task> inCompleteTasks;
+    TextView categories;
+    Category category;
     //Boolean isPlaying  = false ;
     Task task;
     @Override
@@ -56,6 +58,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         mediaPlayer.setVolume(5f,5f);
         lvCompleted = findViewById(R.id.listviewCompleted);
         lvIncomplete = findViewById(R.id.listviewIncomplete);
+        categories = findViewById(R.id.categories);
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -99,6 +102,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     private void loadAllTasks(){
         completedTasks = taskRoomDB.taskDAO().getSubtasks(getTaskId(),true);
         inCompleteTasks = taskRoomDB.taskDAO().getSubtasks(task.getId(),false);
+        category = taskRoomDB.categoryDAO().getCategoryByID(task.getId());
+        categories.setText(category.getName());
         lvIncomplete.setAdapter(new TaskListAdaptor(this, inCompleteTasks));
         lvCompleted.setAdapter(new TaskListAdaptor(this, completedTasks));
         ListViewSize.getListViewSize(lvIncomplete);
