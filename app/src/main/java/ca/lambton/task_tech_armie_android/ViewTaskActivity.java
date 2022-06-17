@@ -65,7 +65,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         due_date = findViewById(R.id.tv_due_date);
         add_subtask = findViewById(R.id.btn_add_new_task);
         delete_task = findViewById(R.id.btn_delete_task);
-        mediaPlayer = MediaPlayer.create(this, R.raw.song);
+        mediaPlayer = new MediaPlayer();
         audio_layout = findViewById(R.id.audio_ll);
         images_layout = findViewById(R.id.images_layout);
         name = findViewById(R.id.tv_name);
@@ -80,6 +80,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         no_photos = findViewById(R.id.no_photos);
         no_task_incompleted  = findViewById(R.id.no_task_incompleted);
         no_task_completed = findViewById(R.id.no_task_completed);
+        mediaPlayer.setLooping(true);
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -134,9 +135,21 @@ public class ViewTaskActivity extends AppCompatActivity {
                 if (mediaPlayer.isPlaying()) {
                     audio_play.setImageResource(R.drawable.play);
                     mediaPlayer.pause();
+
+
                 } else {
+                    try {
+                        mediaPlayer.setDataSource(task.getAudioPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     audio_play.setImageResource(R.drawable.pause);
-                    mediaPlayer.start();
+                    try {
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -167,8 +180,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         ListViewSize.getListViewSize(lvCompleted);
         if (task.isCompleted()) {
             ivChecked.setVisibility(View.GONE);
+            add_subtask.setVisibility(View.GONE);
         } else {
             ivChecked.setVisibility(View.VISIBLE);
+            add_subtask.setVisibility(View.VISIBLE);
         }
         if (completedTasks.size() == 0)
         {
