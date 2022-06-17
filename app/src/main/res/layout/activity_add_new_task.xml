@@ -50,10 +50,19 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/lato"
+                android:paddingTop="15dp"
+                android:text="Add due date"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+            <TextView
                 android:id="@+id/txtDueDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/edittext_rounded_border"
                 android:fontFamily="@font/lato"
                 android:clickable="true"
