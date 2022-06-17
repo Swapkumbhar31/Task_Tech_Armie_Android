@@ -73,7 +73,8 @@ public class CategoryListAdaptor extends BaseAdapter {
         else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.lblCategoryName.setText(taskRoomDB.categoryDAO().getCategoriesWithTaskCount().toString());
+        holder.lblCategoryName.setText(category.get(i).getName());
+//        holder.tv_tasksCount.setText(category.get(i));
         return view;
     }
 
